@@ -4,47 +4,100 @@ import { Star, ArrowRight, Gavel, Clock, DollarSign, Lock } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
+interface AuctionData {
+  id: number;
+  productId: number;
+  startPrice: number;
+  currentBid: number | null;
+  endTime: string;
+  isActive: boolean;
+  product: {
+    name: string;
+    series: string;
+    year: string;
+    price: number;
+    image: string;
+    condition: string;
+    category: string;
+    description: string | null;
+  };
+  bids: Array<{
+    id: number;
+    amount: number;
+    createdAt: string;
+    user: { name: string };
+  }>;
+}
+
 export function Auction() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, token } = useAuth();
   const navigate = useNavigate();
+  const [auction, setAuction] = useState<AuctionData | null>(null);
   const [bidAmount, setBidAmount] = useState('');
-  const [currentBid, setCurrentBid] = useState(47500);
   const [bidPlaced, setBidPlaced] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  const auctionProduct = {
-    name: '1979 Boba Fett Rocket-Firing Prototype',
-    series: 'Star Wars',
-    year: '1979',
-    price: 150000,
-    condition: 'AFA 85',
-    category: 'Prototype & Pre-Production',
-    image: 'https://images.unsplash.com/photo-1608889175123-8ee362201f81?q=80&w=2000&auto=format&fit=crop',
-    description: 'The holy grail of Star Wars collecting. This fully painted L-slot prototype represents one of the few surviving examples of the rocket-firing mechanism that was never released to the public.',
-    provenance: 'Private Collection, Tokyo',
-    certificate: '#0247 Authenticated',
-    yearMade: '1979 Kenner',
-    conditionGrade: 'Unpunched / Mint'
-  };
+  useEffect(() => {
+    axios.get('http://localhost:5001/api/auctions/current')
+      .then(res => {
+        setAuction(res.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
 
-  const handleBid = () => {
+  const handleBid = async () => {
     if (!isAuthenticated) {
       navigate('/login');
       return;
     }
     
-    const bid = parseInt(bidAmount);
-    if (!bid || bid <= currentBid) {
-      setError('Bid must be higher than current bid');
-      return;
+    try {
+      await axios.post(
+        `http://localhost:5001/api/auctions/${auction!.id}/bid`,
+        { amount: parseInt(bidAmount) },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      const res = await axios.get('http://localhost:5001/api/auctions/current');
+      setAuction(res.data);
+      
+      setBidPlaced(true);
+      setBidAmount('');
+      setError('');
+      setTimeout(() => setBidPlaced(false), 3000);
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Failed to place bid');
     }
-    
-    setCurrentBid(bid);
-    setBidPlaced(true);
-    setBidAmount('');
-    setError('');
-    setTimeout(() => setBidPlaced(false), 3000);
   };
+
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-16 flex items-center justify-center min-h-[60vh]">
+        <div className="animate-pulse text-gold-500">Loading auction...</div>
+      </div>
+    );
+  }
+
+  if (!auction) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-16 text-center">
+        <p className="text-cream-400 text-xl">No active auctions at the moment.</p>
+      </div>
+    );
+  }
+
+  const currentBid = auction.currentBid || auction.startPrice;
+  const minBid = currentBid + 1000;
+  const endDate = new Date(auction.endTime);
+  const now = new Date();
+  const timeLeft = endDate.getTime() - now.getTime();
+  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-16">
@@ -79,13 +132,13 @@ export function Auction() {
         <div className="relative">
           <div className="absolute top-4 left-4 z-10 bg-charcoal-900/90 backdrop-blur border border-gold-500/30 px-4 py-2">
             <span className="text-gold-400 text-xs tracking-widest uppercase font-medium">
-              L-Slot Prototype
+              {auction.product.condition}
             </span>
           </div>
           <div className="relative aspect-square rounded-2xl overflow-hidden border border-charcoal-700">
             <img
-              src={auctionProduct.image}
-              alt={auctionProduct.name}
+              src={auction.product.image}
+              alt={auction.product.name}
               className="w-full h-full object-cover"
             />
           </div>
@@ -96,33 +149,33 @@ export function Auction() {
             <div className="flex items-center gap-2 mb-4">
               <Star className="w-4 h-4 text-gold-500 fill-gold-500" />
               <span className="text-gold-500 text-sm font-medium tracking-wide">
-                AFA 85+ NM+
+                {auction.product.condition}
               </span>
             </div>
             <h2 className="text-3xl md:text-4xl font-serif text-cream-100 leading-tight mb-4">
-              {auctionProduct.name}
+              {auction.product.name}
             </h2>
             <p className="text-cream-300 text-lg font-light leading-relaxed">
-              {auctionProduct.description}
+              {auction.product.description}
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-6 py-6 border-y border-white/10">
             <div>
-              <span className="block text-cream-400 text-xs uppercase tracking-wider mb-1">Provenance</span>
-              <span className="text-cream-100 font-serif">{auctionProduct.provenance}</span>
-            </div>
-            <div>
-              <span className="block text-cream-400 text-xs uppercase tracking-wider mb-1">Certificate</span>
-              <span className="text-cream-100 font-serif">{auctionProduct.certificate}</span>
+              <span className="block text-cream-400 text-xs uppercase tracking-wider mb-1">Series</span>
+              <span className="text-cream-100 font-serif">{auction.product.series}</span>
             </div>
             <div>
               <span className="block text-cream-400 text-xs uppercase tracking-wider mb-1">Year</span>
-              <span className="text-cream-100 font-serif">{auctionProduct.yearMade}</span>
+              <span className="text-cream-100 font-serif">{auction.product.year}</span>
             </div>
             <div>
-              <span className="block text-cream-400 text-xs uppercase tracking-wider mb-1">Condition</span>
-              <span className="text-cream-100 font-serif">{auctionProduct.conditionGrade}</span>
+              <span className="block text-cream-400 text-xs uppercase tracking-wider mb-1">Category</span>
+              <span className="text-cream-100 font-serif">{auction.product.category}</span>
+            </div>
+            <div>
+              <span className="block text-cream-400 text-xs uppercase tracking-wider mb-1">Starting Price</span>
+              <span className="text-cream-100 font-serif">${auction.startPrice.toLocaleString()}</span>
             </div>
           </div>
 
@@ -136,7 +189,7 @@ export function Auction() {
               </div>
               <div className="flex items-center gap-2 text-cream-400">
                 <Clock className="w-4 h-4" />
-                <span className="text-sm">Ends in 2d 14h</span>
+                <span className="text-sm">{days}d {hours}h left</span>
               </div>
             </div>
 
@@ -149,7 +202,7 @@ export function Auction() {
                       type="number"
                       value={bidAmount}
                       onChange={(e) => setBidAmount(e.target.value)}
-                      placeholder={`Enter $${currentBid + 1000}+`}
+                      placeholder={`Enter $${minBid}+`}
                       className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg py-4 pl-10 pr-4 text-cream-100 outline-none focus:border-gold-500"
                     />
                   </div>

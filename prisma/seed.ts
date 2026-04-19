@@ -99,6 +99,8 @@ async function main() {
     }
   ]
 
+  await prisma.auctionBid.deleteMany();
+  await prisma.auction.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
   await prisma.product.deleteMany();
@@ -108,6 +110,32 @@ async function main() {
       data: product
     })
   }
+
+  const auctionProduct = await prisma.product.create({
+    data: {
+      name: '1979 Boba Fett Rocket-Firing Prototype',
+      series: 'Star Wars',
+      year: '1979',
+      price: 150000,
+      condition: 'AFA 85',
+      category: 'Prototype & Pre-Production',
+      image: 'https://images.unsplash.com/photo-1608889175123-8ee362201f81?q=80&w=2000&auto=format&fit=crop',
+      description: 'The holy grail of Star Wars collecting. This fully painted L-slot prototype represents one of the few surviving examples of the rocket-firing mechanism that was never released to the public.'
+    }
+  });
+
+  const endTime = new Date();
+  endTime.setDate(endTime.getDate() + 3);
+
+  const auction = await prisma.auction.create({
+    data: {
+      productId: auctionProduct.id,
+      startPrice: 40000,
+      currentBid: 47500,
+      endTime: endTime,
+      isActive: true
+    }
+  });
 
   console.log('Seed data created successfully')
 }
