@@ -1,5 +1,6 @@
 import React from 'react'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
+import { Link } from 'react-router-dom'
 export function CategoryNav() {
   const { ref, isVisible } = useScrollAnimation()
   const categories = [
@@ -17,9 +18,9 @@ export function CategoryNav() {
           className={`flex flex-wrap justify-center gap-x-12 gap-y-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           {categories.map((category, index) => (
-            <a
+            <Link
               key={index}
-              href="#"
+              to={`/catalog?category=${encodeURIComponent(category)}`}
               className="group relative text-xl md:text-2xl font-serif text-cream-300 hover:text-gold-400 transition-colors duration-300"
               style={{
                 transitionDelay: `${index * 100}ms`,
@@ -27,7 +28,7 @@ export function CategoryNav() {
             >
               {category}
               <span className="absolute -bottom-2 left-0 w-full h-[1px] bg-gold-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left ease-out"></span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

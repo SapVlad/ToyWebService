@@ -1,23 +1,42 @@
-import React from 'react';
-import { Navbar } from './components/Navbar';
-import { HeroSection } from './components/HeroSection';
-import { TrustBar } from './components/TrustBar';
-import { CategoryNav } from './components/CategoryNav';
-import { GrailOfTheWeek } from './components/GrailOfTheWeek';
-import { FeaturedProducts } from './components/FeaturedProducts';
-import { RecentlySoldTicker } from './components/RecentlySoldTicker';
-import { Footer } from './components/Footer';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Layout } from './components/Layout';
+import { Home } from './pages/Home';
+import { Login } from './pages/Login';
+import { Register } from './pages/Register';
+import { Catalog } from './pages/Catalog';
+import { ProductDetail } from './pages/ProductDetail';
+import { Cart } from './pages/Cart';
+import { Checkout } from './pages/Checkout';
+import { Profile } from './pages/Profile';
+
+import { About } from './pages/About';
+import { Contact } from './pages/Contact';
+import { Categories } from './pages/Categories';
+import { Admin } from './pages/Admin';
+import { AdminRoute } from './components/AdminRoute';
+
 export function App() {
-  return <div className="min-h-screen bg-charcoal-900 text-cream-100 selection:bg-gold-500/30 selection:text-gold-300">
-      <Navbar />
-      <main>
-        <HeroSection />
-        <TrustBar />
-        <CategoryNav />
-        <GrailOfTheWeek />
-        <FeaturedProducts />
-      </main>
-      <RecentlySoldTicker />
-      <Footer />
-    </div>;
+  return (
+    <Router>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/categories" element={<Categories />} />
+          
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<Admin />} />
+          </Route>
+        </Route>
+      </Routes>
+    </Router>
+  );
 }

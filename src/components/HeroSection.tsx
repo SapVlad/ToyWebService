@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
+
 export function HeroSection() {
   const [scrollY, setScrollY] = useState(0)
   useEffect(() => {
@@ -46,16 +48,16 @@ export function HeroSection() {
           </p>
 
           <div className="pt-8 flex flex-col md:flex-row items-center justify-center gap-6">
-            <button className="group relative px-8 py-4 bg-gold-600 text-charcoal-950 font-medium tracking-wide overflow-hidden transition-all duration-300 hover:bg-gold-500 hover:shadow-[0_0_30px_rgba(201,168,76,0.3)]">
+            <Link to="/catalog" className="group relative px-8 py-4 bg-gold-600 text-charcoal-950 font-medium tracking-wide overflow-hidden transition-all duration-300 hover:bg-gold-500 hover:shadow-[0_0_30px_rgba(201,168,76,0.3)]">
               <span className="relative z-10 flex items-center">
-                View Current Auctions
+                Explore Collection
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </span>
-            </button>
+            </Link>
 
-            <button className="group px-8 py-4 bg-transparent border border-cream-200/20 text-cream-100 font-medium tracking-wide transition-all duration-300 hover:border-gold-500/50 hover:text-gold-400">
+            <Link to="/contact" className="group px-8 py-4 bg-transparent border border-cream-200/20 text-cream-100 font-medium tracking-wide transition-all duration-300 hover:border-gold-500/50 hover:text-gold-400">
               Consign Your Collection
-            </button>
+            </Link>
           </div>
         </div>
       </div>

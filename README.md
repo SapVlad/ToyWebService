@@ -1,73 +1,88 @@
-# React + TypeScript + Vite
+# Archive Toy Shop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack showcase project for a vintage toy store, featuring a charcoal and gold aesthetic.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- npm (comes with Node.js)
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Follow these steps to get the project running on your local machine.
 
-## Expanding the ESLint configuration
+### 1. Install Dependencies
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Open your terminal in the project root directory and run:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Database Setup
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The project uses Prisma with SQLite. You need to generate the Prisma client and initialize the database with mock data.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Run these commands in your terminal:**
+
+```bash
+# Generate Prisma Client
+npx prisma generate
+
+# Create the database and run migrations
+npx prisma migrate dev --name init
 ```
+
+*Note: The `migrate dev` command will also automatically run the seed script (`prisma/seed.ts`) to populate your database with high-quality toy data.*
+
+### 3. Running the Application
+
+This project consists of two parts: the backend server and the frontend application. You need to run both.
+
+#### Step A: Start the Backend Server
+In your terminal, run:
+```bash
+npm run server
+```
+The backend server will start on `http://localhost:5001`.
+
+#### Step B: Start the Frontend (Vite)
+Open a **new terminal window/tab**, navigate to the project root, and run:
+```bash
+npm run dev
+```
+The frontend will be available at `http://localhost:5173` (or the port displayed in your terminal).
+
+---
+
+## Default Admin Account
+
+To access the Admin Dashboard, use the following credentials:
+- **Email:** `admin@archiveshop.com`
+- **Password:** `admin123`
+
+## Commands Summary
+
+| Task | Command |
+| :--- | :--- |
+| **Install Everything** | `npm install` |
+| **Init/Reset Database** | `npx prisma migrate dev --name init` |
+| **Start Backend** | `npm run server` |
+| **Start Frontend** | `npm run dev` |
+| **Build for Production** | `npm run build` |
+
+## Troubleshooting
+
+### Windows Users
+- If you encounter issues with `npx` commands in PowerShell, try using a standard Command Prompt (cmd) or ensure your execution policy allows running scripts.
+- Make sure no other process is using ports `5001` or `5173`.
+
+### Linux/macOS Users
+- Ensure you have write permissions in the project directory for the SQLite database file (`dev.db`) to be created.
+
+## Tech Stack
+
+- **Frontend:** React 18, TypeScript, Vite 8, Tailwind CSS v4
+- **Backend:** Express.js 5, Node.js, tsx (for ESM support)
+- **Database:** Prisma ORM, SQLite
+- **Styling:** Custom "Charcoal & Gold" design system

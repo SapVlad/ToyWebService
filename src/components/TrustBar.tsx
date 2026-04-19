@@ -1,4 +1,3 @@
-import React from 'react'
 import { ShieldCheck, Truck, Award, Search } from 'lucide-react'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 export function TrustBar() {

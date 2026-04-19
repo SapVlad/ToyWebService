@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { Star, ArrowRight } from 'lucide-react'
 export function GrailOfTheWeek() {
@@ -102,10 +103,10 @@ export function GrailOfTheWeek() {
                     $47,500
                   </span>
                 </div>
-                <button className="w-full sm:w-auto px-8 py-4 bg-cream-100 text-charcoal-950 hover:bg-gold-400 transition-colors duration-300 font-medium flex items-center justify-center group">
+                <Link to="/contact" className="w-full sm:w-auto px-8 py-4 bg-cream-100 text-charcoal-950 hover:bg-gold-400 transition-colors duration-300 font-medium flex items-center justify-center group">
                   Inquire to Purchase
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </button>
+                </Link>
               </div>
             </div>
           </div>
