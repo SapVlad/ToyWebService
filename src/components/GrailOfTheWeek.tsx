@@ -1,9 +1,40 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { Star, ArrowRight } from 'lucide-react'
+import axios from 'axios'
+
+interface AuctionProduct {
+  id: number
+  name: string
+  image: string
+  series: string
+  year: string
+  condition: string
+}
+
+interface Auction {
+  id: number
+  currentBid: number | null
+  startPrice: number
+  endTime: string
+  product: AuctionProduct
+}
+
 export function GrailOfTheWeek() {
   const { ref, isVisible } = useScrollAnimation()
+  const [auction, setAuction] = useState<Auction | null>(null)
+
+  useEffect(() => {
+    axios.get('http://localhost:5001/api/auctions/current')
+      .then(res => setAuction(res.data))
+      .catch(err => console.error(err))
+  }, [])
+
+  if (!auction) return null
+
+  const displayPrice = auction.currentBid || auction.startPrice
+
   return (
     <section className="py-24 bg-charcoal-900 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
@@ -29,13 +60,13 @@ export function GrailOfTheWeek() {
               <div className="absolute inset-0 bg-gold-500/10 blur-2xl transform group-hover:scale-105 transition-transform duration-700 opacity-0 group-hover:opacity-100"></div>
               <div className="relative aspect-square overflow-hidden rounded-sm border border-white/10 shadow-2xl">
                 <img
-                  src="https://images.unsplash.com/photo-1608889175123-8ee362201f81?q=80&w=2000&auto=format&fit=crop"
-                  alt="1979 Boba Fett Rocket-Firing Prototype"
+                  src={auction.product.image}
+                  alt={auction.product.name}
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4 bg-charcoal-950/90 backdrop-blur border border-gold-500/30 px-4 py-2">
                   <span className="text-gold-400 text-xs tracking-widest uppercase font-medium">
-                    L-Slot Prototype
+                    {auction.product.condition}
                   </span>
                 </div>
               </div>
@@ -51,7 +82,7 @@ export function GrailOfTheWeek() {
                   </span>
                 </div>
                 <h3 className="text-3xl md:text-5xl font-serif text-cream-100 leading-tight mb-4">
-                  1979 Boba Fett Rocket-Firing Prototype
+                  {auction.product.name}
                 </h3>
                 <p className="text-cream-300 text-lg font-light leading-relaxed">
                   The holy grail of Star Wars collecting. This fully painted
@@ -82,7 +113,7 @@ export function GrailOfTheWeek() {
                   <span className="block text-cream-400 text-xs uppercase tracking-wider mb-1">
                     Year
                   </span>
-                  <span className="text-cream-100 font-serif">1979 Kenner</span>
+                  <span className="text-cream-100 font-serif">{auction.product.year} {auction.product.series}</span>
                 </div>
                 <div>
                   <span className="block text-cream-400 text-xs uppercase tracking-wider mb-1">
@@ -99,9 +130,9 @@ export function GrailOfTheWeek() {
                   <span className="block text-cream-400 text-sm mb-1">
                     Current Bid
                   </span>
-                  <span className="text-4xl font-serif text-gold-400">
-                    $47,500
-                  </span>
+<span className="text-4xl font-serif text-gold-400">
+                      ${displayPrice.toLocaleString()}
+                    </span>
                 </div>
                 <Link to="/auction" className="w-full sm:w-auto px-8 py-4 bg-cream-100 text-charcoal-950 hover:bg-gold-400 transition-colors duration-300 font-medium flex items-center justify-center group">
                   Place Bid
