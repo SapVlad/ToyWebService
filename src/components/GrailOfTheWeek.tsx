@@ -103,8 +103,8 @@ export function GrailOfTheWeek() {
                     $47,500
                   </span>
                 </div>
-                <Link to="/contact" className="w-full sm:w-auto px-8 py-4 bg-cream-100 text-charcoal-950 hover:bg-gold-400 transition-colors duration-300 font-medium flex items-center justify-center group">
-                  Inquire to Purchase
+                <Link to="/auction" className="w-full sm:w-auto px-8 py-4 bg-cream-100 text-charcoal-950 hover:bg-gold-400 transition-colors duration-300 font-medium flex items-center justify-center group">
+                  Place Bid
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>

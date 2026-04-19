@@ -12,6 +12,7 @@ import { Profile } from './pages/Profile';
 import { About } from './pages/About';
 import { Contact } from './pages/Contact';
 import { Categories } from './pages/Categories';
+import { Auction } from './pages/Auction';
 import { Admin } from './pages/Admin';
 import { AdminRoute } from './components/AdminRoute';
 
@@ -31,6 +32,7 @@ export function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/auction" element={<Auction />} />
           
           <Route element={<AdminRoute />}>
             <Route path="/admin" element={<Admin />} />

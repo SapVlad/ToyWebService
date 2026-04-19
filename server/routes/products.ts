@@ -33,6 +33,21 @@ router.get('/categories/counts', async (req, res) => {
   }
 });
 
+router.get('/categories/first-product', async (req, res) => {
+  try {
+    const products = await prisma.product.findMany({ orderBy: { id: 'asc' } });
+    const byCategory: Record<string, any> = {};
+    for (const p of products) {
+      if (!byCategory[p.category]) {
+        byCategory[p.category] = p;
+      }
+    }
+    res.json(byCategory);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 router.post('/', authenticate, isAdmin, async (req, res) => {
   const { name, series, year, price, image, condition, category, description } = req.body;
   try {

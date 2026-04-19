@@ -2,23 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const categoryConfig: Record<string, { displayName: string; image: string }> = {
-  'Vintage Figures': { displayName: 'Vintage Figures', image: 'https://images.unsplash.com/photo-1636572481914-a07d3673bd36?q=80&w=1000&auto=format&fit=crop' },
-  'Sealed Grails': { displayName: 'Sealed Grails', image: 'https://images.unsplash.com/photo-1601153211050-61a27458dd21?q=80&w=1000&auto=format&fit=crop' },
-  'Japanese Imports': { displayName: 'Japanese Imports', image: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=1000&auto=format&fit=crop' },
-  'Prototype & Pre-Production': { displayName: 'Prototypes', image: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?q=80&w=1000&auto=format&fit=crop' }
+const categoryConfig: Record<string, { displayName: string; fallbackImage: string }> = {
+  'Vintage Figures': { displayName: 'Vintage Figures', fallbackImage: 'https://images.unsplash.com/photo-1636572481914-a07d3673bd36?q=80&w=1000&auto=format&fit=crop' },
+  'Sealed Grails': { displayName: 'Sealed Grails', fallbackImage: 'https://images.unsplash.com/photo-1601153211050-61a27458dd21?q=80&w=1000&auto=format&fit=crop' },
+  'Japanese Imports': { displayName: 'Japanese Imports', fallbackImage: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=1000&auto=format&fit=crop' },
+  'Prototype & Pre-Production': { displayName: 'Prototypes', fallbackImage: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?q=80&w=1000&auto=format&fit=crop' }
 };
 
 interface CategoryCount {
   [key: string]: number;
 }
 
+interface FirstProduct {
+  [key: string]: { image: string };
+}
+
 export function Categories() {
   const [categoryCounts, setCategoryCounts] = useState<CategoryCount>({});
+  const [firstProducts, setFirstProducts] = useState<FirstProduct>({});
 
   useEffect(() => {
     axios.get('http://localhost:5001/api/products/categories/counts')
       .then(res => setCategoryCounts(res.data))
+      .catch(err => console.error(err));
+    axios.get('http://localhost:5001/api/products/categories/first-product')
+      .then(res => setFirstProducts(res.data))
       .catch(err => console.error(err));
   }, []);
 
@@ -26,7 +34,7 @@ export function Categories() {
     name: config.displayName,
     urlParam: dbName,
     count: categoryCounts[dbName] || 0,
-    image: config.image
+    image: firstProducts[dbName]?.image || config.fallbackImage
   }));
 
   return (

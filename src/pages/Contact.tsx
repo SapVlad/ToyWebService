@@ -1,7 +1,18 @@
-import React from 'react';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 
 export function Contact() {
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Contact form submitted:', formData);
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 5000);
+    setFormData({ name: '', email: '', subject: '', message: '' });
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-16">
       <div className="text-center mb-16">
@@ -16,27 +27,52 @@ export function Contact() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
         <div className="bg-charcoal-800 p-10 rounded-2xl border border-charcoal-700">
           <h2 className="text-2xl font-bold text-cream-100 mb-8">Send a Secure Inquiry</h2>
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm text-cream-500 mb-2">Name</label>
-                <input type="text" className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg p-3 text-cream-100 outline-none focus:border-gold-500" />
+                <input 
+                  type="text" 
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                  className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg p-3 text-cream-100 outline-none focus:border-gold-500" 
+                />
               </div>
               <div>
                 <label className="block text-sm text-cream-500 mb-2">Email</label>
-                <input type="email" className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg p-3 text-cream-100 outline-none focus:border-gold-500" />
+                <input 
+                  type="email" 
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg p-3 text-cream-100 outline-none focus:border-gold-500" 
+                />
               </div>
             </div>
             <div>
               <label className="block text-sm text-cream-500 mb-2">Subject</label>
-              <input type="text" className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg p-3 text-cream-100 outline-none focus:border-gold-500" />
+              <input 
+                type="text" 
+                value={formData.subject}
+                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                required
+                className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg p-3 text-cream-100 outline-none focus:border-gold-500" 
+              />
             </div>
             <div>
               <label className="block text-sm text-cream-500 mb-2">Message</label>
-              <textarea rows={6} className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg p-3 text-cream-100 outline-none focus:border-gold-500" placeholder="Describe your request..."></textarea>
+              <textarea 
+                rows={6} 
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                required
+                className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg p-3 text-cream-100 outline-none focus:border-gold-500" 
+                placeholder="Describe your request..."
+              ></textarea>
             </div>
-            <button type="button" className="w-full bg-gold-600 hover:bg-gold-500 text-charcoal-900 font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all">
-              <Send className="w-4 h-4" /> Send Message
+            <button type="submit" className="w-full bg-gold-600 hover:bg-gold-500 text-charcoal-900 font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all">
+              {submitted ? <><CheckCircle className="w-4 h-4" /> Message Sent</> : <><Send className="w-4 h-4" /> Send Message</>}
             </button>
           </form>
         </div>
