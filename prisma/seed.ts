@@ -34,7 +34,7 @@ async function main() {
       price: 4500,
       condition: 'Complete in Box',
       category: 'Vintage Figures',
-      image: 'https://thumbs.worthpoint.com/zoom/images3/1/1216/12/gi-joe-aircraft-carrier-uss-flagg_1_951f1830f984dabd54d0ebcb2b1f4cfa.jpg',
+      image: 'https://static.wikia.nocookie.net/gijoe/images/6/6d/Ussflagg.jpg/revision/latest?cb=20100217051504',
       description: 'The ultimate G.I. Joe playset. Over 7 feet long, this USS Flagg comes complete with all original parts and the original box.'
     },
     {
