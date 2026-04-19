@@ -1,8 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { AuthRequest } from './auth';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '../index';
 
 export const isAdmin = async (req: AuthRequest, res: Response, next: NextFunction) => {
   if (!req.userId) return res.status(401).json({ error: 'Unauthorized' });
