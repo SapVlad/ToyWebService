@@ -24,7 +24,7 @@ async function main() {
       price: 8200,
       condition: 'AFA 85',
       category: 'Vintage Figures',
-      image: 'https://images.unsplash.com/photo-1636572481914-a07d3673bd36?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://i.ebayimg.com/images/g/APEAAeSw1G9oyaFN/s-l400.jpg',
       description: 'The iconic leader of the Autobots in his original 1984 G1 form. This specimen is graded AFA 85, representing a near-mint example of toy history.'
     },
     {
@@ -34,7 +34,7 @@ async function main() {
       price: 4500,
       condition: 'Complete in Box',
       category: 'Vintage Figures',
-      image: 'https://images.unsplash.com/photo-1532103861939-270836c2455f?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://thumbs.worthpoint.com/zoom/images3/1/1216/12/gi-joe-aircraft-carrier-uss-flagg_1_951f1830f984dabd54d0ebcb2b1f4cfa.jpg',
       description: 'The ultimate G.I. Joe playset. Over 7 feet long, this USS Flagg comes complete with all original parts and the original box.'
     },
     {
@@ -44,7 +44,7 @@ async function main() {
       price: 2800,
       condition: 'Mint on Card',
       category: 'Sealed Grails',
-      image: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://www.sideshow.com/cdn-cgi/image/height=850,quality=90,f=auto/https://www.sideshow.com/storage/product-images/904181/skeletor-panthor-classic-deluxe_masters-of-the-universe_scale_65cd469b49841.jpg',
       description: 'A legendary MOTU set featuring the Overlord of Evil and his savage cat companion, Panthor. Mint on card and beautifully preserved.'
     },
     {
@@ -54,7 +54,7 @@ async function main() {
       price: 3200,
       condition: 'Sealed',
       category: 'Sealed Grails',
-      image: 'https://images.unsplash.com/photo-1601153211050-61a27458dd21?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://preview.redd.it/tmnt-technodrome-playset-from-1991-jcpenney-christmas-v0-ljmdnjkcto6a1.jpg?auto=webp&s=0a8c599b18ab0e6b151d6d89914449f7c50378ec',
       description: 'The mobile fortress of Krang and Shredder. This 1990 TMNT Technodrome is factory sealed, a true centerpiece for any Turtle collection.'
     },
     {
@@ -94,7 +94,7 @@ async function main() {
         price: 3500,
         condition: 'Boxed',
         category: 'Japanese Imports',
-        image: 'https://images.unsplash.com/photo-1590810335505-ab5109677b10?q=80&w=1000&auto=format&fit=crop',
+        image: 'https://preview.redd.it/thoughts-on-shogun-warriors-godzilla-toy-v0-que1z37kozde1.jpeg?width=640&crop=smart&auto=webp&s=6ef816e10e7aca8097f7d94c23a15a557926809c',
         description: 'Massive 24-inch Godzilla from the Shogun Warriors line. Features firing fist and tongue-flame action. Original box included.'
     }
   ]
