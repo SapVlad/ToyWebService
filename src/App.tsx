@@ -33,6 +33,7 @@ export function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/auction" element={<Auction />} />
+          <Route path="/auction/:id" element={<Auction />} />
           
           <Route element={<AdminRoute />}>
             <Route path="/admin" element={<Admin />} />

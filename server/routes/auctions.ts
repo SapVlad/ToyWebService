@@ -28,6 +28,33 @@ router.get('/current', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res) => {
+  try {
+    const auctionId = parseInt(req.params.id);
+    const auction = await prisma.auction.findUnique({
+      where: { id: auctionId },
+      include: {
+        product: true,
+        bids: {
+          orderBy: { amount: 'desc' },
+          take: 5,
+          include: {
+            user: {
+              select: { name: true }
+            }
+          }
+        }
+      }
+    });
+    if (!auction) {
+      return res.status(404).json({ error: 'Auction not found' });
+    }
+    res.json(auction);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 router.post('/:id/bid', authenticate, async (req: AuthRequest, res) => {
   try {
     const { amount } = req.body;

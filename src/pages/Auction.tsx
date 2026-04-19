@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Star, ArrowRight, Gavel, Clock, DollarSign, Lock } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
@@ -32,6 +32,7 @@ interface AuctionData {
 export function Auction() {
   const { isAuthenticated, token } = useAuth();
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
   const [auction, setAuction] = useState<AuctionData | null>(null);
   const [bidAmount, setBidAmount] = useState('');
   const [bidPlaced, setBidPlaced] = useState(false);
@@ -39,16 +40,26 @@ export function Auction() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:5001/api/auctions/current')
-      .then(res => {
+    const fetchAuction = async () => {
+      setLoading(true);
+      try {
+        let url = 'http://localhost:5001/api/auctions/';
+        if (id) {
+          url += id;
+        } else {
+          url += 'current';
+        }
+        const res = await axios.get(url);
         setAuction(res.data);
+      } catch (err: any) {
+        console.error('Fetch auction error:', err);
+        setAuction(null);
+      } finally {
         setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, []);
+      }
+    };
+    fetchAuction();
+  }, [id]);
 
   const handleBid = async () => {
     if (!isAuthenticated) {
@@ -57,13 +68,14 @@ export function Auction() {
     }
     
     try {
+      const auctionId = id || auction!.id;
       await axios.post(
-        `http://localhost:5001/api/auctions/${auction!.id}/bid`,
+        `http://localhost:5001/api/auctions/${auctionId}/bid`,
         { amount: parseInt(bidAmount) },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
-      const res = await axios.get('http://localhost:5001/api/auctions/current');
+      const res = await axios.get(`http://localhost:5001/api/auctions/${auctionId}`);
       setAuction(res.data);
       
       setBidPlaced(true);
