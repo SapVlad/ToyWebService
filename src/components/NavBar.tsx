@@ -67,7 +67,7 @@ export function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center space-x-6">
-          <form onSubmit={handleSearch} className="hidden lg:flex items-center relative">
+          <form onSubmit={handleSearch} className="hidden md:flex items-center relative">
             <input
               type="text"
               placeholder="Search Archives..."
@@ -80,9 +80,18 @@ export function Navbar() {
             </button>
           </form>
 
-          <Link to="/catalog" className="lg:hidden text-cream-200 hover:text-gold-400 transition-colors">
+          <button 
+            type="button"
+            onClick={() => {
+              const query = prompt('Search Archives...');
+              if (query?.trim()) {
+                navigate(`/catalog?q=${encodeURIComponent(query.trim())}`);
+              }
+            }}
+            className="md:hidden text-cream-200 hover:text-gold-400 transition-colors"
+          >
             <Search className="w-5 h-5" />
-          </Link>
+          </button>
           
           <Link to="/cart" className="relative text-cream-200 hover:text-gold-400 transition-colors">
             <ShoppingBag className="w-5 h-5" />

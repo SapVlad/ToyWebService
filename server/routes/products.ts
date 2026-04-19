@@ -15,6 +15,24 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/categories/counts', async (req, res) => {
+  try {
+    const counts = await prisma.product.groupBy({
+      by: ['category'],
+      _count: {
+        id: true
+      }
+    });
+    const result = counts.reduce((acc, item) => {
+      acc[item.category] = item._count.id;
+      return acc;
+    }, {} as Record<string, number>);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 router.post('/', authenticate, isAdmin, async (req, res) => {
   const { name, series, year, price, image, condition, category, description } = req.body;
   try {

@@ -7,7 +7,7 @@ export function Layout() {
   return (
     <div className="min-h-screen bg-charcoal-900 text-cream-100 selection:bg-gold-500/30 selection:text-gold-300">
       <Navbar />
-      <main>
+      <main className="pt-24">
         <Outlet />
       </main>
       <RecentlySoldTicker />
