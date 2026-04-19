@@ -23,7 +23,7 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-charcoal-900/40 z-10"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900 via-charcoal-900/50 to-transparent z-10"></div>
         <img
-          src="https://images.unsplash.com/photo-1566576912902-199bd620ed36?q=80&w=2560&auto=format&fit=crop"
+          src="https://external-preview.redd.it/my-vintage-star-wars-action-figure-set-is-finally-complete-v0-vyBPwA4cHm_XlhwCUyxD9GPUqFaAcRfMg0xzIEJ0Hb8.jpg?auto=webp&s=cedeb1e20126a6b2d93d86282b1fd6d8974b662d"
           alt="Vintage Star Wars Collection"
           className="w-full h-full object-cover"
         />
